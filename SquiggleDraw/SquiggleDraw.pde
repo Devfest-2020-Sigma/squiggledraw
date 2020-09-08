@@ -268,35 +268,21 @@ void createPic() {
 
     int x;
 
-    if (reverseRow)
-    {
-      x = p2.width;
-      lastX = p2.width;
-    } else
-    {
-      x = 1;
-      lastX = 1;
-    }
+    x = 1;
+    lastX = 1;
 
+    float[] xPoints = new float[0]; 
+    float[] yPoints = new float[0];
 
     while (finalStep == false) { // Iterate over each each x-step in the row
 
-      if (reverseRow)
-      {    // Moving left to right on even rows
-        x -= xstep;
-        if (x - xstep < 1)
-          finalStep = true;
-        else
-          finalStep = false;
-      } else
-      { // Moving right to left as usual
-        x += xstep;
-        if (x + xstep >= p2.width)
-          finalStep = true;
-        else
-          finalStep = false;
-      }
-
+      // Moving right to left:
+      x += xstep;
+      if (x + xstep >= p2.width)
+        finalStep = true;
+      else
+        finalStep = false;
+      
       b = (int)alpha(p2.get(x, y));
       b = max(minB, b);
       z = max(maxB-b, 0);        // Brightness trimmed to range.
@@ -312,7 +298,7 @@ void createPic() {
 
       float df = z/xsmooth;
       if (df < minPhaseIncr)
-        df = minPhaseIncr;
+        zzzzzzzzzzzzzzzzdf = minPhaseIncr;
 
       /*
        Enforce a maximum phase increment -- a frequency cap -- to prevent 
@@ -360,11 +346,19 @@ void createPic() {
             lastPhase = lastPhase + HALF_PI;
             lastAmpl = lastAmpl + amplPerVertex;
 
-            curveVertex(xOffset + scaleFactor * lastX, scaleFactor *(y+sin(lastPhase)*lastAmpl));
+            xPoints =  append(xPoints, xOffset + scaleFactor * lastX); 
+            yPoints =  append(yPoints, scaleFactor *(y+sin(lastPhase)*lastAmpl));
           }
         }
     }
+    if (reverseRow) {
+      xPoints = reverse(xPoints);
+      yPoints = reverse(yPoints);
+    }
 
+    for (int i = 0; i < xPoints.length; i++) {
+      curveVertex(xPoints[i], yPoints[i]);
+    }
     // Add final "extra" point to give splines a consistent visual endpoint:
     if (reverseRow)
     {
