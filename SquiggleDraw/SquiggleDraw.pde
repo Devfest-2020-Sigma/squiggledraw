@@ -298,7 +298,7 @@ void createPic() {
 
       float df = z/xsmooth;
       if (df < minPhaseIncr)
-        zzzzzzzzzzzzzzzzdf = minPhaseIncr;
+        df = minPhaseIncr;
 
       /*
        Enforce a maximum phase increment -- a frequency cap -- to prevent 
